@@ -1,35 +1,52 @@
-from fastapi import FastAPI
+import codecs
+from fastapi import *
 from pydantic import BaseModel
+import csv
 
 app = FastAPI()
 
 class Item(BaseModel):
+    id: str
     name: str
-    price: float
+    price: str
     quantity: str
 
-data = {
-    1: {
-        "name": "a",
-        "price": 100,
-        "quantity": "normal"
-    },
-    2: {
-        "name": "b",
-        "price": 200,
-        "quantity": "good"
-    },
-    3: {
-        "name": "c",
-        "price": 50,
-        "quantity": "bad"
-    },
-    4: {
-        "name": "d",
-        "price": 300,
-        "quantity": "good"
-    }
-}
+
+# data = {
+#     1: {
+#         "name": "a",
+#         "price": 100,
+#         "quantity": "normal"
+#     },
+#     2: {
+#         "name": "b",
+#         "price": 200,
+#         "quantity": "good"
+#     },
+#     3: {
+#         "name": "c",
+#         "price": 50,
+#         "quantity": "bad"
+#     },
+#     4: {
+#         "name": "d",
+#         "price": 300,
+#         "quantity": "good"
+#     }
+# }
+
+data = {}
+
+@app.post("/upload", tags=["Database"])
+def upload(file: UploadFile = File(...)):
+    csvReader = csv.DictReader(codecs.iterdecode(file.file, 'utf-8'))
+    for rows in csvReader:
+        key = int(rows['id'])
+        data[key] = rows
+    
+    file.file.close()
+    return data
+
 
 @app.get('/', tags=["Item"])
 def getItems():
