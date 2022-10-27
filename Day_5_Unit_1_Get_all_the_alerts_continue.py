@@ -27,6 +27,7 @@ with open('alert.csv','w') as file:
         alertId= soup.select('#page-title')
         alertId =  ''.join(re.findall(r'.{4}-.{4}',alertId[0].getText()))
         alertName = soup.select('#page-sub-title')
+        alertName = alertName[0].getText()
         regexRelease =re.compile(r'Original release date: (.*)(.*)?')
         releaseDate = soup.select('.submitted.meta-text')
         releaseDate = releaseDate[0].getText().strip()
@@ -46,5 +47,5 @@ with open('alert.csv','w') as file:
         else:
             tip = tip.getText()
 
-        writer.writerow([link, alertId, alertName[0].getText(), releaseDate, revised, tip])
+        writer.writerow([link, alertId, alertName, releaseDate, revised, tip])
         
