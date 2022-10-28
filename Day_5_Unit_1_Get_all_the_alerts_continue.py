@@ -40,7 +40,7 @@ with open('alert.csv','w') as file:
         if revised == None:
             revised = ""
         else:
-            revised = revised.group(1).strip().split('|')[0]
+            revised = revised.group(1).strip()
         tip = soup.find('p', class_= "tip-intro")
         if tip == None:
             tip = ""
