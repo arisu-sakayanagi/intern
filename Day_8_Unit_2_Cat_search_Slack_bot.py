@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
 
 
-
+#gui anh moi 5p
 # while True:
 #     urllib.request.urlretrieve('https://catass.com/cat',"./cat.png")
 #     upload_text_file = client.files_upload(
