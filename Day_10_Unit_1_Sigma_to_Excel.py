@@ -14,20 +14,12 @@ with open(sigma, "r") as stream:
         dict = yaml.safe_load(stream)
         title = dict['title']
         description = dict['description']
-        technique = dict['tags']
+        technique = '\n'.join(dict['tags'])
     except yaml.YAMLError as exc:
         print(exc)
 
 workbook = xlsxwriter.Workbook('sigma_to_excel.xlsx')
 worksheet = workbook.add_worksheet()
-worksheet.write('A1', 'File Name')
-worksheet.write('B1', 'Title')
-worksheet.write('C1', 'Description')
-worksheet.write('D1', 'Technique')
-worksheet.write('E1', 'Query')
-worksheet.write('B2', title)
-worksheet.write('C2', description)
-worksheet.write('A2', file_name)
-worksheet.write('E2', query)
-worksheet.write('D2', '\n'.join(technique))
+worksheet.write_row(0,0, ['File Name', 'Title', 'Description', 'Technique', 'Query'])
+worksheet.write_row(1,0, [file_name, title, description, technique, query])
 workbook.close()
