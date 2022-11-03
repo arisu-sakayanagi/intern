@@ -17,7 +17,7 @@ args = parser.parse_args()
 #python sigma_to_excel.py -t splunk -c splunk-windows /home/kami/Desktop/intern/sigma/rules/windows/sysmon/sysmon_config_modification_error.yml -out sigma.xlsx
 
 
-if re.search(r'.*\/', args.folder):
+if re.search(r'.*\/.*', args.folder):
     while True:
         if os.path.isdir('/home/kami/Desktop/intern/sigma'):
                 # rmtree('/home/kami/Desktop/intern/sigma')
