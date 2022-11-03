@@ -1,4 +1,4 @@
-import subprocess, argparse, xlsxwriter, yaml, os, time
+import subprocess, argparse, xlsxwriter, yaml, os, time, re
 # import pandas as pd
 from shutil import rmtree
 from openpyxl import load_workbook as lw
@@ -16,16 +16,19 @@ args = parser.parse_args()
 #python sigma_to_excel.py -t splunk -c splunk-windows -out sigma.xlsx -r /home/kami/Desktop/intern/sigma/rules/windows/sysmon/ sigma
 #python sigma_to_excel.py -t splunk -c splunk-windows /home/kami/Desktop/intern/sigma/rules/windows/sysmon/sysmon_config_modification_error.yml -out sigma.xlsx
 
-if os.path.isdir(args.folder):
+
+if re.search(r'.*\/', args.folder):
     while True:
         if os.path.isdir('/home/kami/Desktop/intern/sigma'):
-                rmtree('/home/kami/Desktop/intern/sigma')
-        subprocess.call('git clone https://github.com/SigmaHQ/sigma', shell=True)
+                # rmtree('/home/kami/Desktop/intern/sigma')
+                subprocess.call('cd sigma', shell=True)
+                subprocess.call('git pull', shell=True)
+        else: subprocess.call('git clone https://github.com/SigmaHQ/sigma', shell=True)
         dir_path = args.folder
         for path in os.listdir(dir_path): 
             if os.path.isfile(os.path.join(dir_path, path)):
                 path = args.folder + path
-                query = subprocess.check_output('/home/kami/Desktop/intern/sigma/tools/sigmac -t'+args.target+' -c'+args.config+' '+path, shell=True).decode('utf-8')
+                query = subprocess.check_output('/home/kami/Desktop/intern/sigma/tools/sigmac -t '+args.target+' -c '+args.config+' '+path, shell=True).decode('utf-8')
                 file_name = path.split('/')[-1]
                 with open(path, "r") as stream:
                     try:
@@ -64,12 +67,12 @@ if os.path.isdir(args.folder):
 else:
     while True:
         if os.path.isdir('/home/kami/Desktop/intern/sigma'):
-            rmtree('/home/kami/Desktop/intern/sigma')
-        subprocess.call('git clone https://github.com/SigmaHQ/sigma', shell=True)
+            # rmtree('/home/kami/Desktop/intern/sigma')
+            subprocess.call('cd sigma', shell=True)
+            subprocess.call('git pull', shell=True)
+        else: subprocess.call('git clone https://github.com/SigmaHQ/sigma', shell=True)
         sigma = args.sigma
-
-        query = subprocess.check_output('/home/kami/Desktop/intern/sigma/tools/sigmac -t'+args.target+' -c'+args.config+' '+sigma, shell=True).decode('utf-8')
-
+        query = subprocess.check_output('/home/kami/Desktop/intern/sigma/tools/sigmac -t '+args.target+' -c '+args.config+' '+sigma, shell=True).decode('utf-8')
         file_name = sigma.split('/')[-1]
         with open(sigma, "r") as stream:
             try:
