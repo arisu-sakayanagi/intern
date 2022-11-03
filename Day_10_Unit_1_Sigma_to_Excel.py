@@ -13,7 +13,8 @@ parser.add_argument('sigma', metavar='sigma', type=str,help='sigma')
 parser.add_argument('-out', '--output', type=str, help='output')
 args = parser.parse_args()
 
-
+#python sigma_to_excel.py -t splunk -c splunk-windows -out sigma.xlsx -r /home/kami/Desktop/intern/sigma/rules/windows/sysmon/ sigma
+#python sigma_to_excel.py -t splunk -c splunk-windows /home/kami/Desktop/intern/sigma/rules/windows/sysmon/sysmon_config_modification_error.yml -out sigma.xlsx -r folder
 
 if os.path.isdir(args.folder):
     while True:
